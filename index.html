@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTIK - Le Goût Authentique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-orange: #FF6B00;
+            --secondary-orange: #FF4D00;
+            --accent-yellow: #FFB800;
+            --dark-black: #0A0A0A;
+            --charcoal: #121212;
+            --card-bg: #1E1E1E;
+            --white: #FFFFFF;
+            --light-gray: #A0A0A0;
+            --gray-text: #888888;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--white);
+            background-color: transparent;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background System */
+        .bg-animation-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .bg-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 2s ease-in-out, transform 10s linear;
+            will-change: opacity, transform;
+            transform: scale(1.1);
+            z-index: 1;
+        }
+
+        .bg-slide.active {
+            opacity: 0.6; /* Increased for better visibility */
+            transform: scale(1);
+            z-index: 2;
+        }
+
+        .bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(10, 10, 10, 0.2) 0%, rgba(10, 10, 10, 0.7) 100%);
+            z-index: 3;
+        }
+
+        h1, h2, h3, .logo-text {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo img {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+            transition: var(--transition);
+            filter: drop-shadow(0 0 10px rgba(255, 107, 0, 0.2));
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            header { height: 70px; }
+            .logo img { height: 50px; }
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: var(--transition);
+            position: relative;
+            opacity: 0.8;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-orange);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a:hover {
+            color: var(--primary-orange);
+            opacity: 1;
+        }
+
+        .header-btns {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-order {
+            background: var(--primary-orange);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .btn-order:hover {
+            background: var(--secondary-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 20px;
+            overflow: hidden;
+            background-color: transparent;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 60px;
+            border-radius: 0;
+            border-left: 5px solid var(--primary-orange);
+            max-width: 1000px;
+            width: 90%;
+            z-index: 4;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin-bottom: 10px;
+            line-height: 0.9;
+            font-weight: 900;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .hero .punchline {
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            margin-bottom: 40px;
+            font-weight: 400;
+            color: var(--primary-orange);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 900;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--dark-black);
+        }
+
+        /* Menu Nav */
+        .menu-nav {
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 25px 0;
+            position: sticky;
+            top: 90px;
+            z-index: 998;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .menu-nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 0 5%;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .menu-nav-container::-webkit-scrollbar { display: none; }
+
+        .menu-nav a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .menu-nav a.active, .menu-nav a:hover {
+            opacity: 1;
+            color: var(--primary-orange);
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 0 20px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--white);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-orange);
+        }
+
+        /* Menu Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .menu-card {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-orange);
+            background: rgba(30, 30, 30, 0.8);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-orange);
+            color: white;
+            padding: 5px 12px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            border-radius: 2px;
+        }
+
+        .card-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+
+        .card-desc {
+            color: var(--light-gray);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            font-weight: 300;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        .card-price {
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--primary-orange);
+        }
+
+        .btn-add {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            outline: none;
+        }
+
+        .btn-add:hover {
+            background: var(--primary-orange);
+            border-color: var(--primary-orange);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-content h3 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-orange);
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: var(--light-gray);
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border: 10px solid var(--charcoal);
+            box-shadow: 20px 20px 0 var(--primary-orange);
+        }
+
+        /* Instagram Gallery */
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .insta-item {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .insta-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .insta-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 107, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .insta-item:hover img { transform: scale(1.1); }
+        .insta-item:hover .insta-overlay { opacity: 1; }
+
+        /* Location */
+        .location-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .map-frame {
+            width: 100%;
+            height: 500px;
+            border: none;
+            filter: grayscale(1) invert(1) contrast(1.2);
+        }
+
+        .location-details {
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Contact Form */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: var(--charcoal);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary-orange);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 80px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo img { height: 80px; margin-bottom: 20px; }
+
+        .social-links {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover { color: var(--primary-orange); }
+
+        /* Payment Section */
+        .payment-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .payment-card-container {
+            perspective: 1000px;
+            width: 100%;
+            max-width: 420px;
+            height: 260px;
+            margin: 0 auto;
+        }
+
+        .payment-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .payment-card:hover, .payment-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            padding: 30px;
+            color: white;
+            background: linear-gradient(to right bottom, #323941, #061018);
+            box-shadow: 0 33px 50px -15px rgba(50, 55, 63, .66);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+            border-radius: 5px;
+        }
+
+        .card-number-display {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin: 20px 0;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .card-info-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .card-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            opacity: 0.6;
+            margin-bottom: 5px;
+        }
+
+        .card-value {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-strip {
+            width: calc(100% + 60px);
+            height: 50px;
+            background: #000;
+            margin-left: -30px;
+            margin-top: 10px;
+        }
+
+        .card-cvv-display {
+            background: #fff;
+            color: #000;
+            padding: 10px;
+            text-align: right;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .payment-form-container {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .payment-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .payment-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+            color: var(--gray-text);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .payment-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        /* Cart UI */
+        .cart-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background: var(--primary-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.4);
+            z-index: 2000;
+            transition: var(--transition);
+        }
+
+        .cart-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 107, 0, 0.6);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: white;
+            color: var(--primary-orange);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 900;
+            border: 2px solid var(--primary-orange);
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            height: 100vh;
+            background: var(--charcoal);
+            z-index: 3000;
+            transition: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 50px rgba(0,0,0,0.5);
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+        }
+
+        .cart-header h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .close-cart {
+            font-size: 2rem;
+            color: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-cart:hover {
+            color: var(--primary-orange);
+            transform: rotate(90deg);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .cart-item-info h4 {
+            color: var(--white);
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-info p {
+            color: var(--primary-orange);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-remove {
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .cart-footer-panel {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .cart-total-row span:first-child {
+            color: var(--light-gray);
+            font-size: 1.1rem;
+        }
+
+        .cart-total-row span:last-child {
+            color: var(--white);
+            font-size: 1.8rem;
+            font-weight: 900;
+            font-family: 'Oswald', sans-serif;
+        }
+
+        @media (max-width: 576px) {
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+                padding: 20px;
+            }
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 992px) {
+            .about-grid, .location-container, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .instagram-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-content { padding: 40px 20px; }
+        }
+
+        @media (max-width: 768px) {
+            header { height: 70px; }
+            .logo img { height: 50px; }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--dark-black);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 40px;
+                transition: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+                z-index: 1001;
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            }
+
+            nav.active {
+                right: 0;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                background: transparent;
+                border: none;
+                cursor: pointer;
+                z-index: 1002;
+            }
+
+            .mobile-menu-btn span {
+                display: block;
+                width: 30px;
+                height: 3px;
+                background: var(--white);
+                transition: var(--transition);
+                border-radius: 2px;
+            }
+
+            .mobile-menu-btn.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+                background: var(--primary-orange);
+            }
+
+            .mobile-menu-btn.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-menu-btn.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+                background: var(--primary-orange);
+            }
+            
+            .menu-grid { grid-template-columns: 1fr; }
+            .section-header h2 { font-size: 2.5rem; }
+            .hero-content { padding: 40px 20px; }
+        }
+
+        .mobile-menu-btn { display: none; }
+        @media (max-width: 768px) { .mobile-menu-btn { display: flex; } }
+
+    </style>
+</head>
+<body>
+
+<div class="bg-animation-container" id="bg-animation">
+    <div class="bg-overlay"></div>
+</div>
+
+<header>
+    <a href="#home" class="logo">
+        <img src="LOGO/logo.jpg" alt="Intik Burgers Logo">
+    </a>
+    <nav id="main-nav">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#about">About</a>
+        <a href="#location">Location</a>
+        <a href="#payment">Payment</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-btns">
+        <a href="#menu" class="btn-order">Order Now</a>
+        <button class="mobile-menu-btn" id="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+</header>
+
+<section class="hero" id="home">
+    <div class="hero-overlay"></div>
+    <div class="hero-content reveal">
+        <p class="punchline">Authentic Street Gourmet</p>
+        <h1>INTIK BURGERS</h1>
+        <p>Juicy, premium, and social-media ready. The boldest burgers in town are here to satisfy your cravings.</p>
+        <div class="hero-btns">
+            <a href="#menu" class="btn-order">Explore Menu</a>
+            <a href="#location" class="btn-outline">Find Us</a>
+        </div>
+    </div>
+</section>
+
+<div class="menu-nav">
+    <div class="menu-nav-container" id="menu-categories">
+        <!-- Categories will be injected here -->
+    </div>
+</div>
+
+<div class="container" id="menu-container">
+    <!-- Menu sections will be injected here -->
+</div>
+
+<!-- GALLERY SECTION -->
+<section id="gallery" class="reveal">
+    <div class="container">
+        <div class="section-header">
+            <h2>The Vibe</h2>
+            <p style="color: var(--light-gray); margin-top: 15px;">Instagram-ready, soul-satisfying.</p>
+        </div>
+        <div class="instagram-grid">
+            <div class="insta-item reveal">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=800" alt="Intik Burger Close-up">
+                <div class="insta-overlay"><i class="fab fa-instagram"></i></div>
+            </div>
+            <div class="insta-item reveal">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=800" alt="Loaded Fries Close-up">
+                <div class="insta-overlay"><i class="fab fa-instagram"></i></div>
+            </div>
+            <div class="insta-item reveal">
+                <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?q=80&w=800" alt="Juicy Burger">
+                <div class="insta-overlay"><i class="fab fa-instagram"></i></div>
+            </div>
+            <div class="insta-item reveal">
+                <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?q=80&w=800" alt="Gourmet Burger">
+                <div class="insta-overlay"><i class="fab fa-instagram"></i></div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="https://www.instagram.com/intikburgers" target="_blank" class="btn-outline">Follow @intikburgers</a>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about" class="reveal">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-image reveal">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1000&auto=format&fit=crop" alt="Intik Burgers Soul">
+            </div>
+            <div class="about-content reveal">
+                <div class="section-header" style="text-align: left; margin-bottom: 30px;">
+                    <h2 style="font-size: 3rem;">Our Story</h2>
+                </div>
+                <h3 style="color: var(--primary-orange); margin-bottom: 20px;">Street Soul, Gourmet Taste</h3>
+                <p>Born from a passion for authentic street flavors and premium ingredients, Intik Burgers is more than just a meal—it's an experience. We believe in bold tastes, juicy bites, and social-media-ready presentation that tastes even better than it looks.</p>
+                <p>Our mission is simple: to serve the best burgers in town with a vibe that keeps you coming back for more. From our signature smash beef to our loaded fries, every item is crafted with love and a bit of street soul.</p>
+                <a href="#menu" class="btn-order">Taste the Difference</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- LOCATION SECTION -->
+<section id="location" class="reveal">
+    <div class="container">
+        <div class="section-header">
+            <h2>Find Us</h2>
+        </div>
+        <div class="location-container reveal">
+            <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3198.058356134375!2d3.0560!3d36.7538!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x128fad467d532b27%3A0x6b78d9b158814777!2sIntik%20Burgers!5e0!3m2!1sen!2sdz!4v1700000000000!5m2!1sen!2sdz" allowfullscreen="" loading="lazy"></iframe>
+            <div class="location-details">
+                <h3 style="color: var(--primary-orange); margin-bottom: 20px;">VISIT OUR SPOT</h3>
+                <p style="margin-bottom: 20px; color: var(--light-gray);">Experience the boldest flavors in person. We're located in the heart of Bab Ezzouar, ready to serve you the best street gourmet experience.</p>
+                <div style="margin-bottom: 15px;">
+                    <p style="font-weight: bold; color: var(--white);">ADDRESS:</p>
+                    <p style="color: var(--light-gray);">Cité 2068 logements, Bab Ezzouar, Alger, Algeria</p>
+                </div>
+                <div style="margin-bottom: 30px;">
+                    <p style="font-weight: bold; color: var(--white);">HOURS:</p>
+                    <p style="color: var(--light-gray);">Mon - Sun: 11:30 AM - 11:00 PM</p>
+                </div>
+                <a href="https://maps.app.goo.gl/BDV46YZXqnTzpQXC8" target="_blank" class="btn-order" style="display: inline-block; text-align: center;">Get Directions</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="reveal">
+    <div class="container">
+        <div class="section-header">
+            <h2>Get in Touch</h2>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info reveal">
+                <h3 style="color: var(--primary-orange); margin-bottom: 20px;">CONTACT US</h3>
+                <p style="color: var(--light-gray); margin-bottom: 30px;">Have a question or want to order for pickup? Reach out to us through our social channels or fill the form.</p>
+                
+                <div style="margin-bottom: 20px;">
+                    <p style="font-weight: bold; color: var(--white);">PHONE:</p>
+                    <p style="color: var(--primary-orange); font-size: 1.2rem;">+213 555 123 456</p>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <p style="font-weight: bold; color: var(--white);">SOCIAL:</p>
+                    <div class="social-links" style="margin-top: 10px;">
+                        <a href="https://www.instagram.com/intikburgers" target="_blank" style="color: var(--white); font-size: 1.5rem; margin-right: 20px;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="color: var(--white); font-size: 1.5rem; margin-right: 20px;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" style="color: var(--white); font-size: 1.5rem;"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <form class="contact-form reveal">
+                <div class="form-group">
+                    <input type="text" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn-order">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- PAYMENT SECTION -->
+<section id="payment" class="reveal">
+    <div class="container">
+        <div class="section-header">
+            <h2>Secure Payment</h2>
+        </div>
+        <div class="payment-grid">
+            <div class="payment-card-container reveal">
+                <div class="payment-card" id="credit-card">
+                    <!-- Front -->
+                    <div class="card-front">
+                        <div class="card-chip"></div>
+                        <div class="card-number-display" id="card-num-display">#### #### #### ####</div>
+                        <div class="card-info-row">
+                            <div>
+                                <div class="card-label">Card Holder</div>
+                                <div class="card-value" id="card-name-display">YOUR NAME</div>
+                            </div>
+                            <div>
+                                <div class="card-label">Expires</div>
+                                <div class="card-value" id="card-expiry-display">MM/YY</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Back -->
+                    <div class="card-back">
+                        <div class="card-strip"></div>
+                        <div class="card-cvv-section">
+                            <div class="card-label">CVV</div>
+                            <div class="card-cvv-display" id="card-cvv-display">***</div>
+                        </div>
+                        <div style="font-size: 0.6rem; opacity: 0.5; margin-top: 20px;">
+                            This card is for demonstration purposes only. Intik Burgers uses secure encrypted payment gateways for all real transactions.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-form-container reveal">
+                <form class="payment-form">
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" id="card-number-input" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Card Holder</label>
+                        <input type="text" id="card-name-input" placeholder="Full Name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiration Date</label>
+                            <input type="text" id="card-expiry-input" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="text" id="card-cvv-input" placeholder="***" maxlength="3" required>
+                        </div>
+                    </div>
+                    <div style="margin: 20px 0; padding: 15px; background: rgba(255,107,0,0.1); border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: var(--light-gray);">Amount to Pay:</span>
+                        <span id="payment-amount" style="color: var(--white); font-weight: 900; font-size: 1.2rem;">0 DZD</span>
+                    </div>
+                    <button type="submit" class="btn-order" style="width: 100%;">Pay Now & Confirm Order</button>
+                </form>
+                
+                <div style="margin-top: 30px; text-align: center; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="color: var(--gray-text); font-size: 0.9rem; margin-bottom: 15px;">— OR —</p>
+                    <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 10px; border: 1px dashed rgba(255,107,0,0.3);">
+                        <p style="color: var(--white); margin-bottom: 10px; font-weight: bold;">Prefer to order by phone?</p>
+                        <a href="tel:+213555123456" class="btn-outline" style="display: inline-block; padding: 10px 20px; font-size: 1.1rem; border-color: var(--primary-orange); color: var(--primary-orange);">
+                            <i class="fas fa-phone-alt" style="margin-right: 10px;"></i> +213 555 123 456
+                        </a>
+                        <p style="color: var(--gray-text); font-size: 0.75rem; margin-top: 10px;">Call us now to place your order directly!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CART UI -->
+<div class="cart-toggle" id="cart-toggle">
+    <i class="fas fa-shopping-bag"></i>
+    <div class="cart-count" id="cart-count">0</div>
+</div>
+
+<div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+        <h2>Your Order</h2>
+        <div class="close-cart" id="close-cart">&times;</div>
+    </div>
+    <div class="cart-items" id="cart-items-container">
+        <!-- Cart items will be injected here -->
+        <p style="color: var(--gray-text); text-align: center; margin-top: 40px;">Your cart is empty.</p>
+    </div>
+    <div class="cart-footer-panel">
+        <div class="cart-total-row">
+            <span>Total</span>
+            <span id="cart-total">0 DZD</span>
+        </div>
+        <a href="#payment" class="btn-order" style="width: 100%; text-align: center; display: block;" id="checkout-btn">Proceed to Payment</a>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-logo">
+                <img src="LOGO/logo.jpg" alt="Intik Burgers Logo" style="height: 70px; margin-bottom: 20px;">
+                <p style="color: var(--gray-text);">Intik Burgers: The boldest street gourmet experience in town. Crafted with passion, served with soul.</p>
+            </div>
+            <div>
+                <h4 style="color: var(--white); font-family: 'Oswald'; text-transform: uppercase; margin-bottom: 20px;">Quick Links</h4>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;"><a href="#home" style="color: var(--light-gray); text-decoration: none; transition: var(--transition);">Home</a></li>
+                    <li style="margin-bottom: 10px;"><a href="#menu" style="color: var(--light-gray); text-decoration: none; transition: var(--transition);">Menu</a></li>
+                    <li style="margin-bottom: 10px;"><a href="#payment" style="color: var(--light-gray); text-decoration: none; transition: var(--transition);">Payment</a></li>
+                    <li style="margin-bottom: 10px;"><a href="#contact" style="color: var(--light-gray); text-decoration: none; transition: var(--transition);">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: var(--white); font-family: 'Oswald'; text-transform: uppercase; margin-bottom: 20px;">Stay Connected</h4>
+                <p style="color: var(--light-gray); margin-bottom: 20px;">Follow us on Instagram for daily deals and juicy content.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/intikburgers" target="_blank" style="color: var(--white); font-size: 1.2rem; margin-right: 15px;"><i class="fab fa-instagram"></i> @intikburgers</a>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--gray-text); font-size: 0.8rem;">
+            &copy; 2026 INTIK BURGERS. All Rights Reserved. Designed for Food Lovers.
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Animated Background System Implementation
+    const bgImages = [
+        "back ground/Capture d'écran 2026-01-28 225440.png",
+        "back ground/Capture d'écran 2026-01-28 231230.png",
+        "back ground/Capture d'écran 2026-01-28 231258.png",
+        "back ground/Capture d'écran 2026-01-28 231328.png",
+        "back ground/Capture d'écran 2026-01-30 170236.png",
+        "back ground/Capture d'écran 2026-01-30 170242.png",
+        "back ground/Capture d'écran 2026-01-30 170257.png",
+        "back ground/Capture d'écran 2026-01-30 170310.png",
+        "back ground/Capture d'écran 2026-01-30 170315.png"
+    ];
+
+    const bgContainer = document.getElementById('bg-animation');
+    let currentSlideIndex = 0;
+    const slides = [];
+    let animationStarted = false;
+
+    // Preload and initialize slides
+    function initBackground() {
+        if (!bgContainer) {
+            console.error("Background container not found");
+            return;
+        }
+
+        bgImages.forEach((src, index) => {
+            const img = new Image();
+            img.src = src;
+            img.onload = () => {
+                const slide = document.createElement('div');
+                slide.className = 'bg-slide';
+                slide.style.backgroundImage = `url("${encodeURI(src)}")`;
+                bgContainer.appendChild(slide);
+                slides.push(slide);
+                
+                // Set the first loaded image as active immediately
+                if (slides.length === 1) {
+                    slide.classList.add('active');
+                }
+                
+                // Start animation if we have at least 2 slides and haven't started yet
+                if (slides.length >= 2 && !animationStarted) {
+                    startBgAnimation();
+                }
+            };
+            img.onerror = () => {
+                console.warn(`Failed to load background image: ${src}`);
+            };
+        });
+    }
+
+    function startBgAnimation() {
+        if (animationStarted || slides.length < 2) return;
+        
+        animationStarted = true;
+        setInterval(() => {
+            if (slides.length < 2) return;
+
+            const activeSlide = slides[currentSlideIndex];
+            if (activeSlide) {
+                activeSlide.classList.remove('active');
+                currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+                slides[currentSlideIndex].classList.add('active');
+            }
+        }, 8000); // 8 seconds per slide
+    }
+
+    // Initialize on load
+    window.addEventListener('load', initBackground);
+
+    // Reveal Animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => {
+        revealObserver.observe(el);
+    });
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
+    const mainNav = document.getElementById('main-nav');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenuBtn.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        
+        if (mainNav.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenuBtn.classList.remove('active');
+            mainNav.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
+
+    // Smooth Scroll with Offset
+    function initSmoothScroll() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const headerHeight = 90;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    }
+
+    // --- MENU MANAGEMENT SYSTEM ---
+    const menuData = [
+        {
+            category: "sandwiches",
+            title: "Gourmet Sandwiches",
+            items: [
+                {
+                    name: "LE 129",
+                    price: 750,
+                    description: "The legendary street sandwich that defines the vibe. A complete meal for true street food lovers.",
+                    ingredients: ["Artisanal Bread", "Double Beef Patty", "Melting Cheese", "House Secret Sauce", "Crispy Onions"],
+                    specs: "Includes side of Golden Fries & Drink",
+                    badge: "Legendary"
+                }
+            ]
+        },
+        {
+            category: "loaded-fries",
+            title: "Loaded Fries",
+            items: [
+                {
+                    name: "BRUX",
+                    price: 650,
+                    description: "Belgian-style inspired fries with a rich, creamy texture and gourmet toppings.",
+                    ingredients: ["Fresh Cut Fries", "Belgian Sauce", "Caramelized Onions", "Chives"],
+                    badge: "Must Try"
+                },
+                {
+                    name: "CHUNK",
+                    price: 700,
+                    description: "Heavy duty fries loaded with crispy chicken chunks for the ultimate protein kick.",
+                    ingredients: ["Golden Fries", "Chicken Tenders Chunks", "White Garlic Sauce", "Cheddar Melt"],
+                },
+                {
+                    name: "MISTRAL",
+                    price: 720,
+                    description: "A fresh Mediterranean breeze on your fries with herbs and light sauces.",
+                    ingredients: ["Hand-cut Fries", "Herbes de Provence", "Garlic Infused Mayo", "Parmesan Dust"],
+                },
+                {
+                    name: "SPICE",
+                    price: 750,
+                    description: "For those who handle the heat. A spicy explosion that keeps you coming back.",
+                    ingredients: ["Spiced Fries", "Jalapeños", "Sriracha Mayo", "Chili Flakes"],
+                    badge: "Spicy"
+                },
+                {
+                    name: "RAGE",
+                    price: 750,
+                    description: "The wildest loaded fries on the menu. Pure indulgence in every bite.",
+                    ingredients: ["Fries", "Beef Bacon Bits", "Double Cheddar Sauce", "Fried Leeks"],
+                }
+            ]
+        },
+        {
+            category: "burgers",
+            title: "Signature Burgers",
+            items: [
+                {
+                    name: "THE CRUNCHER",
+                    price: 550,
+                    description: "Ultra-crispy chicken experience with a perfect balance of crunch and juice.",
+                    ingredients: ["Crispy Chicken Breast", "Gouda Cheese", "Shredded Lettuce", "Classic Mayo"],
+                },
+                {
+                    name: "GRILLZ",
+                    price: 650,
+                    description: "Flame-grilled perfection with a smoky aroma that speaks for itself.",
+                    ingredients: ["Flame-grilled Beef", "Smoked Cheese", "Pickles", "BBQ Glaze"],
+                    variations: [
+                        { label: "Standard", price: 650 },
+                        { label: "Double Stack", price: 850 }
+                    ]
+                },
+                {
+                    name: "SIROCCO",
+                    price: 680,
+                    description: "An exotic spicy journey inspired by the desert winds.",
+                    ingredients: ["Spiced Beef Patty", "House Ratatouille", "Hash Brown", "Harissa Mayo"],
+                    badge: "Spicy"
+                },
+                {
+                    name: "SMASH LEE",
+                    price: 700,
+                    description: "The master of the smash technique. Thin, crispy edges and a juicy center.",
+                    ingredients: ["Double Smash Beef", "American Cheese", "Diced Onions", "Yellow Mustard"],
+                },
+                {
+                    name: "CHEESY AF",
+                    price: 750,
+                    description: "When too much cheese is never enough. A decadent cheesy masterpiece.",
+                    ingredients: ["Beef Patty", "Cheddar", "Mozzarella", "Gouda", "Cheese Sauce Injector"],
+                    badge: "Best Seller"
+                },
+                {
+                    name: "SEAQUEL",
+                    price: 720,
+                    description: "The premium fish alternative. Light, crispy, and surprisingly bold.",
+                    ingredients: ["Panko Crusted Fish", "Tartar Sauce", "Fresh Dill", "Arugula"],
+                },
+                {
+                    name: "BAD GUY",
+                    price: 800,
+                    description: "The villain of hunger. A massive construction for the bravest eaters.",
+                    ingredients: ["Triple Beef Patty", "Fried Egg", "Beef Bacon", "Triple Cheese", "Onion Rings"],
+                },
+                {
+                    name: "INTIK",
+                    price: 780,
+                    description: "Our house special. The perfect representation of the Intik spirit.",
+                    ingredients: ["Premium Beef", "Goat Cheese", "Honey Drizzle", "Walnuts", "Spinach"],
+                    badge: "Signature"
+                }
+            ]
+        },
+        {
+            category: "sides",
+            title: "Sides & Extras",
+            items: [
+                {
+                    name: "CRUNCHBOX",
+                    price: 450,
+                    description: "A generous portion of our signature crispy chicken bites.",
+                    ingredients: ["Chicken Tenders"],
+                    specs: "Portion: 200g",
+                },
+                {
+                    name: "FRYZZA",
+                    price: 400,
+                    description: "The ultimate fusion of fries and pizza. Cheesy and saucy.",
+                    ingredients: ["Fries Base", "Marinara Sauce", "Melted Mozzarella", "Oregano"],
+                },
+                {
+                    name: "RINGZ",
+                    price: 300,
+                    description: "Golden battered onion rings with a satisfying crunch.",
+                    ingredients: ["Jumbo Onions", "Beer Batter", "Spices"],
+                },
+                {
+                    name: "CRISPZ",
+                    price: 350,
+                    description: "House-made artisanal potato crisps, thin and perfectly salted.",
+                    ingredients: ["Thin Sliced Potatoes", "Sea Salt"],
+                },
+                {
+                    name: "CHEESE OPTIONS",
+                    price: 50,
+                    description: "Upgrade any dish with an extra layer of your favorite cheese.",
+                    ingredients: ["Cheddar", "Mozzarella", "Gouda", "Swiss"],
+                    specs: "Price per extra slice",
+                },
+                {
+                    name: "CRACK",
+                    price: 450,
+                    description: "Highly addictive house specialty. You've been warned.",
+                    ingredients: ["Secret Recipe"],
+                }
+            ]
+        },
+        {
+            category: "beverages",
+            title: "Beverages",
+            items: [
+                {
+                    name: "SODA 24cl",
+                    price: 100,
+                    description: "Refreshing cold drinks to accompany your meal.",
+                    ingredients: ["Coca-Cola", "Fanta", "Sprite", "Selecto"],
+                },
+                {
+                    name: "SODA 33cl",
+                    price: 150,
+                    description: "Standard size refreshment for those who need more.",
+                    ingredients: ["Coca-Cola", "Fanta", "Sprite", "Selecto"],
+                }
+            ]
+        }
+    ];
+
+    function renderMenu() {
+        const categoriesContainer = document.getElementById('menu-categories');
+        const menuContainer = document.getElementById('menu-container');
+
+        if (!categoriesContainer || !menuContainer) return;
+
+        let categoriesHTML = '';
+        let menuHTML = '';
+
+        menuData.forEach((cat, index) => {
+            // Render category links
+            categoriesHTML += `<a href="#${cat.category}" class="${index === 0 ? 'active' : ''}">${cat.title}</a>`;
+
+            // Render sections
+            menuHTML += `
+                <section id="${cat.category}" class="reveal">
+                    <div class="section-header">
+                        <h2>${cat.title}</h2>
+                    </div>
+                    <div class="menu-grid">
+                        ${cat.items.map(item => `
+                            <div class="menu-card reveal">
+                                <div class="card-content">
+                                    ${item.badge ? `<div class="card-badge">${item.badge}</div>` : ''}
+                                    <p class="card-title">${item.name}</p>
+                                    <p class="card-desc">${item.description}</p>
+                                    ${item.ingredients ? `<p style="font-size: 0.75rem; color: var(--gray-text); margin-bottom: 10px;">${item.ingredients.join(' • ')}</p>` : ''}
+                                    ${item.specs ? `<p style="font-size: 0.8rem; color: var(--primary-orange); margin-bottom: 15px; font-weight: bold;">${item.specs}</p>` : ''}
+                                    ${item.variations ? `
+                                        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                            ${item.variations.map(v => `<span style="font-size: 0.7rem; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 3px;">${v.label}: ${v.price} DZD</span>`).join('')}
+                                        </div>
+                                    ` : ''}
+                                    <div class="card-footer">
+                                        <p class="card-price">${item.price} DZD</p>
+                                        <button class="btn-add" data-name="${item.name}" data-price="${item.price}" title="Add to Order">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+            `;
+        });
+
+        categoriesContainer.innerHTML = categoriesHTML;
+        menuContainer.innerHTML = menuHTML;
+
+        // Re-observe new elements for reveal animation
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+    }
+
+    // --- CART SYSTEM ---
+    let cart = [];
+    const cartToggle = document.getElementById('cart-toggle');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const closeCart = document.getElementById('close-cart');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartCount = document.getElementById('cart-count');
+    const cartTotal = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    function updateCartUI() {
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p style="color: var(--gray-text); text-align: center; margin-top: 40px;">Your cart is empty.</p>';
+        } else {
+            cartItemsContainer.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.price} DZD</p>
+                    </div>
+                    <div class="cart-item-remove" onclick="removeFromCart(${index})">Remove</div>
+                </div>
+            `).join('');
+        }
+
+        const total = cart.reduce((sum, item) => sum + item.price, 0);
+        cartTotal.textContent = `${total} DZD`;
+        document.getElementById('payment-amount').textContent = `${total} DZD`;
+        cartCount.textContent = cart.length;
+    }
+
+    window.addToCart = function(name, price) {
+        cart.push({ name, price: parseInt(price) });
+        updateCartUI();
+        
+        // Show sidebar when adding first item
+        if (cart.length === 1) {
+            cartSidebar.classList.add('active');
+        }
+
+        // Notification animation
+        cartToggle.style.transform = 'scale(1.2)';
+        setTimeout(() => cartToggle.style.transform = 'scale(1)', 200);
+    };
+
+    window.removeFromCart = function(index) {
+        cart.splice(index, 1);
+        updateCartUI();
+    };
+
+    cartToggle.addEventListener('click', () => cartSidebar.classList.add('active'));
+    closeCart.addEventListener('click', () => cartSidebar.classList.remove('active'));
+    checkoutBtn.addEventListener('click', () => cartSidebar.classList.remove('active'));
+
+    // Delegate click events for dynamic "Add to Order" buttons
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('btn-add')) {
+            const name = e.target.getAttribute('data-name');
+            const price = e.target.getAttribute('data-price');
+            addToCart(name, price);
+        }
+    });
+
+    // Call renderMenu on load
+     renderMenu();
+     initSmoothScroll();
+
+    // Active Nav Link on Scroll (updated to handle dynamic categories)
+    window.addEventListener('scroll', () => {
+        let current = '';
+        const sections = document.querySelectorAll('section');
+        const mainNavLinks = document.querySelectorAll('#main-nav a');
+        const categoryLinks = document.querySelectorAll('#menu-categories a');
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (window.pageYOffset >= (sectionTop - 200)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        mainNavLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+
+        categoryLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+    // Payment Card Interactions
+    const creditCard = document.getElementById('credit-card');
+    const cardNumInput = document.getElementById('card-number-input');
+    const cardNameInput = document.getElementById('card-name-input');
+    const cardExpiryInput = document.getElementById('card-expiry-input');
+    const cardCvvInput = document.getElementById('card-cvv-input');
+
+    const cardNumDisplay = document.getElementById('card-num-display');
+    const cardNameDisplay = document.getElementById('card-name-display');
+    const cardExpiryDisplay = document.getElementById('card-expiry-display');
+    const cardCvvDisplay = document.getElementById('card-cvv-display');
+
+    if (creditCard && cardNumInput) {
+        // Flip card on CVV focus
+        cardCvvInput.addEventListener('focus', () => {
+            creditCard.classList.add('flipped');
+        });
+        cardCvvInput.addEventListener('blur', () => {
+            creditCard.classList.remove('flipped');
+        });
+
+        // Update Card Number
+        cardNumInput.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/\D/g, '');
+            val = val.replace(/(.{4})/g, '$1 ').trim();
+            e.target.value = val;
+            cardNumDisplay.textContent = val || '#### #### #### ####';
+        });
+
+        // Update Card Name
+        cardNameInput.addEventListener('input', (e) => {
+            cardNameDisplay.textContent = e.target.value.toUpperCase() || 'YOUR NAME';
+        });
+
+        // Update Expiry
+        cardExpiryInput.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/\D/g, '');
+            if (val.length > 2) {
+                val = val.substring(0, 2) + '/' + val.substring(2, 4);
+            }
+            e.target.value = val;
+            cardExpiryDisplay.textContent = val || 'MM/YY';
+        });
+
+        // Update CVV
+        cardCvvInput.addEventListener('input', (e) => {
+            let val = e.target.value.replace(/\D/g, '');
+            e.target.value = val;
+            cardCvvDisplay.textContent = val || '***';
+        });
+
+        // Handle Form Submission
+        const paymentForm = document.querySelector('.payment-form');
+        if (paymentForm) {
+            paymentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = e.target.querySelector('button');
+                const originalText = btn.textContent;
+                btn.textContent = 'Processing...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    alert('Order Confirmed! Your gourmet meal is being prepared. Check your email for details.');
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    e.target.reset();
+                    cardNumDisplay.textContent = '#### #### #### ####';
+                    cardNameDisplay.textContent = 'YOUR NAME';
+                    cardExpiryDisplay.textContent = 'MM/YY';
+                    cardCvvDisplay.textContent = '***';
+                }, 2000);
+            });
+        }
+    }
+</script>
+</body>
+</html>
